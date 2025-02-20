@@ -45,6 +45,20 @@ resource "yandex_compute_instance" "server" {
   }
 }
 
+resource "yandex_dns_zone" "zone" {
+  zone   = var.DNS_ZONE
+  name   = var.DNS_ZONE_NAME
+  public = true
+}
+
+resource "yandex_dns_recordset" "recordset" {
+  zone_id = yandex_dns_zone.zone.id
+  name    = var.DNS_NAME
+  type    = "A"
+  ttl     = 300
+  data    = [yandex_compute_instance.server.network_interface[0].nat_ip_address]
+}
+
 # Variables
 variable "NETWORK_NAME" {
   type    = string
@@ -81,4 +95,18 @@ variable "SSH_PRIVATE_KEY_PATH" {
   type        = string
   description = "Path to private ssh-key for server access"
   default     = "~/.ssh/id_ed25519"
+}
+
+variable "DNS_ZONE" {
+  type    = string
+  default = "vvot39.itiscl.ru."
+}
+variable "DNS_ZONE_NAME" {
+  type    = string
+  default = "ru-itiscl-vvot39"
+}
+
+variable "DNS_NAME" {
+  type    = string
+  default = "project"
 }
