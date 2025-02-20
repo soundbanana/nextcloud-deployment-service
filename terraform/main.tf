@@ -31,8 +31,8 @@ variable "SERVICE_ACCOUNT_KEY_FILE_PATH" {
 }
 
 variable "AVAILABILITY_ZONE" {
-  type = string
+  type        = string
   description = "Availability zone code for Yandex Cloud"
-  default = "ru-central1-d"
+  default     = "ru-central1-d"
 }
 
